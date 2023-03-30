@@ -1,4 +1,4 @@
-package classes.week4;
+package exe.ex1;
 import java.util.Scanner;
 /**
  * Department of Computer Science, Ariel University.
@@ -78,7 +78,7 @@ import java.util.Scanner;
  * @author boaz.benmoshe
  * 
  */
-public class Ex1 {
+public class Ex1_old {
 	/**
 	 * Simple debug parameters - in case true additional printing is being done.
 	 */
