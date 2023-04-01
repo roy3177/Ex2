@@ -168,8 +168,8 @@ class Ex2Test {
 	 */
 	public void testArea() {
 		double x1=0, x2=4;
-		double a1 = Ex2.area(po1, po2, x1, x2, 1000);
-		double a2 = Ex2.area(po2, po1, x1, x2, 1000);
+		double a1 = Ex2.area(po1, po2, x1, x2, 100);
+		double a2 = Ex2.area(po2, po1, x1, x2, 100);
 		assertEquals(a1,a2,Ex2.EPS);
 }
 
