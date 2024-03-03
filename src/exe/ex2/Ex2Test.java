@@ -20,8 +20,8 @@ class Ex2Test {
 	static double[] po1 = {2,2}, po2 = {-3, 0.61, 0.2};;
 	static double[] po3 = {2,1,-0.7, -0.02,0.02};
 	static double[] po4 = {-3, 0.61, 0.2};
-	
- 	@Test
+
+	@Test 
 	/**
 	 * Tests that f(x) == poly(x).
 	 */
@@ -55,6 +55,13 @@ class Ex2Test {
 		double[] pp2 = Ex2.mul(po2, minus1);
 		double[] p1 = Ex2.add(p12, pp2);
 		assertTrue(Ex2.equals(p1, po1));
+
+		//Another test:
+		double[]p2= {1.0,3.0,5.0};
+		double[]p3= {7.0,9.0,8.0};
+		double[]result= {8.0,12.0,13.0};
+		double[]ans=Ex2.add(p3, p2);
+		assertArrayEquals(ans,result);
 	}
 	@Test
 	/**
@@ -80,6 +87,12 @@ class Ex2Test {
 	void testMul1() {
 		double[] p1 = Ex2.mul(po1, Ex2.ZERO);
 		assertTrue(Ex2.equals(p1, Ex2.ZERO));
+		//Another test:
+		double[]p2= {2.0,3.0,5.0};//5.0x^2+3.0x+2.0
+		double[]p3= {5.0,3.0,1.0};//1.0x^2+3.0x+5.0
+		double[]result= {10.0,21.0,36.0,18.0,5.0};//5.0x^4+18.0x^3+36.0x^2+21.0x+10.0
+		double[]ans=Ex2.mul(p3, p2);
+		assertArrayEquals(ans,result);
 	}
 	@Test
 	/**
@@ -135,6 +148,12 @@ class Ex2Test {
 		if(!isSame1) {fail();}
 		if(!isSame2) {fail();}
 		assertEquals(sp, Ex2.poly(p1));
+		//Another test:
+
+		String s = "5.0x^3 + 4.5x^2 - 3.5x + 6.0";
+		double[] ans= {6.0, -3.5, 4.5, 5.0};
+		double[]result=Ex2.getPolynomFromString(s);
+		assertArrayEquals(ans,result);
 	}
 	@Test
 	/**
@@ -150,6 +169,19 @@ class Ex2Test {
 		for(int i=0;i<d1.length;i=i+1) {
 			assertFalse(Ex2.equals(d1[i], xx[i]));
 		}
+		//Test options
+		//Option 1:
+		double[] p1 = {1.0, 5.0, 12.0}; //12.0x^2+5.0x+1.0  
+		//Equals.
+		double[] p2 = {1.0, 5.0, 12.0};//12.0x^2+5.0x+1.0
+		assertTrue(Ex2.equals(p1, p2));
+
+		//Option 2:
+		double[] p3 = {1.0, 6.0, 3.0};//3.0x^2+6.0x+1.0
+		//Are not equals.
+		double[] p4 = {1.0, 2.0, 4.0};//4.0x^2+2.0x+1.0
+		assertFalse(Ex2.equals(p3, p4));
+
 	}
 
 	@Test
@@ -157,10 +189,16 @@ class Ex2Test {
 	 * Tests is the sameValue function is symmetric.
 	 */
 	public void testSameValue2() {
-		double x1=0, x2=4;
+		double x1=-4, x2=0;
 		double rs1 = Ex2.sameValue(po1,po2, x1, x2, Ex2.EPS);
 		double rs2 = Ex2.sameValue(po2,po1, x1, x2, Ex2.EPS);
 		assertEquals(rs1,rs2,Ex2.EPS);
+		//Another example of test:
+		double[]p1= {3,6}; //6x+3
+		double[]p2= {-2,5};//5x-2
+		double hituch=Ex2.sameValue(p1, p2, -50, 50, Ex2.EPS); //Check the hituch of the polynoms.
+		assertEquals(-5,hituch,Ex2.EPS);
+
 	}
 	@Test
 	/**
@@ -171,6 +209,106 @@ class Ex2Test {
 		double a1 = Ex2.area(po1, po2, x1, x2, 100);
 		double a2 = Ex2.area(po2, po1, x1, x2, 100);
 		assertEquals(a1,a2,Ex2.EPS);
+
+
+		//Another test:
+		double[] p1 = {1.0, 2.0, 3.0}; // 3.0x^2+2.0x+1.0
+		double[] p2 = {1.0, 2.0, 3.0}; // 3.0x^2+2.0x+1.0
+		double x3 = 0.0;
+		double x4 = 1.0;
+		int numberOfTrapezoid = 100;
+		double result = Ex2.area(p1, p2, x1, x2, numberOfTrapezoid);
+		assertEquals(0.0, result, Ex2.EPS);
+
+	}
+	@Test
+	/**
+	 * Tests the PolynomFromPoints function
+	 */
+	public void testPolynomFromPoints() {
+		double[] xValues = {1.0, 2.0, 3.0};
+		double[] yValues = {1.0, 4.0, 9.0};
+		double[] ePolynom= Ex2.PolynomFromPoints(xValues, yValues);
+		assertArrayEquals(new double[]{0.0,0.0,1.0},ePolynom);
+
+	}
+	@Test
+	/**
+	 * Tests the poly function
+	 */
+	public void testpoly() {
+
+		double[]poly1= {1.0,2.0,3.0,4.0};
+		String ans1="4.0x^3+3.0x^2+2.0x+1.0"; //Example number 1.
+		String result1=Ex2.poly(poly1);
+		assertEquals(ans1,result1);
+
+		double[]poly2= {1.0,8.0,7.0,6.0};
+		String ans2="6.0x^3+7.0x^2+8.0x+1.0"; //Example number 2.
+		String result2=Ex2.poly(poly2);
+		assertEquals(ans2,result2);
+
+
+	}
+	@Test
+	/**
+	 * Tests the derivative function
+	 */
+	public void testDerivative() {
+		double[] p1 = new double[]{1.0, 2.0, 3.0}; // represents the polynomial x^2 + 2x + 3
+		double[] ans1 = new double[]{2.0, 6.0}; // represents the derivative polynomial 2x + 6
+		assertArrayEquals(ans1, Ex2.derivative(p1));
+
+		double[] p2 = new double[]{4.0, 0.0, 0.0, 1.0}; // represents the polynomial x^3 + 4
+		double[] ans2 = new double[]{0.0, 0.0, 3.0}; // represents the derivative polynomial 3x^2
+		assertArrayEquals(ans2, Ex2.derivative(p2));
+	}
+	@Test
+	/**
+	 * Tests the length function
+	 */
+	public void testLength() {
+		//Option 1:
+		double[]poly=new double[5];
+		double x1=0;
+		double x2=20;
+		int numberOfSegments=4;
+
+		double ans=Ex2.length(poly, x1, x2, numberOfSegments);
+		assertEquals(ans,20);
+		//Option 2:
+		double[]poly2=new double[4];
+		double x3=2;
+		double x4=24;
+		int numberofSegments2=6;
+
+		double ans2=Ex2.length(poly2, x3, x4, numberofSegments2);
+		assertEquals(ans2,22);
+
+
+	}
+	@Test
+	/**
+	 * Tests the root_rec function:
+	 */
+	public void testRootRect() {
+		//Test 1:
+		double[] p = {0.0, 3.0, 1.0}; // p(x) = x^2 +3x
+		double x1 = -4.0;
+		double x2 = -2.0;
+		double ans = -3.0; 
+		double result = Ex2.root_rec(p, x1, x2, Ex2.EPS);
+		assertEquals(ans, result);
+		//Test 2:
+		double[]p1= {-9.0,0.0,1.0}; //p(x)=x^2-9
+		double x3=6.0;
+		double x4=0.0;
+		double ans1=3.0;
+		double result1=Ex2.root_rec(p1, x3, x4, Ex2.EPS);
+		assertEquals(ans1, result1);
+
+	}
 }
 
-}
+
+
